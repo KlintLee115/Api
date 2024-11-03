@@ -30,12 +30,16 @@ namespace Api.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Account>(entity =>
-            {
-                entity.ToTable("Accounts");
+            modelBuilder.Entity<Account>().Property(c => c.Id).ValueGeneratedOnAdd();
 
-                entity.Property(c => c.Id).ValueGeneratedOnAdd();
-            });
+            modelBuilder.Entity<Admin>().ToTable("Admins");
+
+            modelBuilder.Entity<Coach>().ToTable("Coaches");
+
+            modelBuilder.Entity<Customer>()
+            .HasMany(c => c.FinancialInfos)
+            .WithMany(fi => fi.Customers)
+            .UsingEntity(j => j.ToTable("CustomerFinancialInfo"));
 
             modelBuilder.Entity<Family>(entity =>
             {
@@ -47,10 +51,7 @@ namespace Api.Database
                     .IsRequired(false);
             });
 
-            modelBuilder.Entity<CourseSchedule>(entity =>
-           {
-               entity.ToTable("CourseSchedules");
-               entity.HasKey(cs =>
+            modelBuilder.Entity<CourseSchedule>().HasKey(cs =>
                new
                {
                    cs.CourseId,
@@ -58,38 +59,17 @@ namespace Api.Database
                    cs.BeginTime,
                });
 
-               
-                entity.HasOne(c => c.Coach)
-                .WithMany(c => c.CourseSchedules)
-                .HasForeignKey(c => c.CoachId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-           });
-
             modelBuilder.Entity<Account>().Property(a => a.Id).ValueGeneratedOnAdd();
-            modelBuilder.Entity<Admin>().ToTable("Admins");
 
             modelBuilder.Entity<Course>().Property(c => c.Id).ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Facility>().Property(f => f.Id).ValueGeneratedOnAdd();
 
-            modelBuilder.Entity<AthleteInfo>(entity =>
-            {
-                entity.ToTable("CustomerAthleteInfo");
-
-                entity.HasOne(ai => ai.Customer)
+            modelBuilder.Entity<AthleteInfo>().HasOne(ai => ai.Customer)
             .WithOne(c => c.AthleteInfo)
             .HasForeignKey<AthleteInfo>(ai => ai.CustomerId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<Coach>().ToTable("Coaches");
-
-            modelBuilder.Entity<Customer>()
-            .HasMany(c => c.FinancialInfos)
-            .WithMany(fi => fi.Customers)
-            .UsingEntity(j => j.ToTable("CustomerFinancialInfo"));
         }
     }
 }

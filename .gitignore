@@ -1,6 +1,7 @@
 # Build results
 /bin/
 /obj/
+/Migrations/
 
 # Visual Studio files
 *.suo

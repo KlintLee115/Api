@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Api.Model.People
 {
     public class Customer: Account
@@ -15,6 +17,8 @@ namespace Api.Model.People
         public bool ShouldReceiveReceiptsForAllPayments { get; set; }
         public ICollection<FinancialInfo> FinancialInfos { get; set; } = [];
         public AthleteInfo? AthleteInfo { get; set; }
+
+        [ForeignKey("Family")]
         public Guid? FamilyId { get; set; }
         public Family? Family { get; set; }
         public RolesEnum? Role { get; set; }

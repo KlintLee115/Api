@@ -6,12 +6,14 @@ namespace Api.Model.Courses
 {
     public class CourseSchedule(Guid courseId, string location, CourseSchedule.DaysInWeekEnum day, TimeOnly beginTime, TimeOnly endTime, Guid coachId)
     {
-        public required Course Course { get; set; }
-
+        
         [ForeignKey("Course")]
         public Guid CourseId { get; set; } = courseId;
+        public required Course Course { get; set; }
+
         public required Coach Coach {get; set; } 
         
+        [ForeignKey("Coach")]
         public Guid CoachId { get; set; } = coachId;
 
         [Length(1, 50)]
