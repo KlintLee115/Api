@@ -57,21 +57,19 @@ namespace Api.Database
                    cs.Location,
                    cs.BeginTime,
                });
+
+               
+                entity.HasOne(c => c.Coach)
+                .WithMany(c => c.CourseSchedules)
+                .HasForeignKey(c => c.CoachId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
            });
 
             modelBuilder.Entity<Account>().Property(a => a.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Admin>().ToTable("Admins");
 
-            modelBuilder.Entity<Course>(entity =>
-            {
-                entity.Property(c => c.Id).ValueGeneratedOnAdd();
-
-                entity.HasOne(c => c.Coach)
-                .WithMany(c => c.Courses)
-                .HasForeignKey(c => c.CoachId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-            });
+            modelBuilder.Entity<Course>().Property(c => c.Id).ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Facility>().Property(f => f.Id).ValueGeneratedOnAdd();
 

@@ -1,17 +1,18 @@
 ﻿using Api.Model.Courses;
-using Api.Model.People;
 
-namespace Api.Model
+namespace Api.Model.People
 {
     public class Coach(string name, string email, string password, string phoneNumber) : Account(name, email, password, phoneNumber)
     {
-        public List<Course> Courses {get; set;} = [];
-        public void ManageBookings() {
+        public ICollection<CourseSchedule> CourseSchedules { get; set; } = [];
+        public void ManageBookings()
+        {
 
         }
 
-        public void ManageTeams() {
-            
+        public void ManageTeams()
+        {
+
         }
     }
 }
